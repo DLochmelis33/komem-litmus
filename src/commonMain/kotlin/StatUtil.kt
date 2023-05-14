@@ -1,4 +1,5 @@
 fun stackFreqSplit(testBatch: List<BasicLitmusTest>) {
+    println("run ended")
     val outcomes = listOf(0 to 0, 0 to 1, 1 to 0, 1 to 1)
 
     val chunkSize = 50_000

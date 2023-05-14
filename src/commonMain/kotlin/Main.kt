@@ -23,14 +23,24 @@ fun main() {
 
     val testProducer = ::SBTest
 
-    val sampleTest = testProducer()
-//    print(sampleTest.name + ",")
-    val param = LitmusTestParameters(null, 5, null, ::CinteropBarrier)
-    val results = runner.runTest(1_000_000, param, testProducer)
-//    val interestingCount = results.countOfType(OutcomeType.INTERESTING)
-//    val forbiddenCount = results.countOfType(OutcomeType.FORBIDDEN)
-//    val totalCount = results.sumOf { it.count }
-//    println("$totalCount,$interestingCount,$forbiddenCount")
-//        if(forbiddenCount != 0L)
-    results.prettyPrint()
+    fun convert(r: LitmusResult) = listOf(0 to 0, 0 to 1, 1 to 0, 1 to 1)
+        .map { o -> r.firstOrNull { it.outcome == o }?.count?.toInt() ?: 0 }
+
+    val resultsQueue = mutableListOf<LitmusResult>()
+    for (n in generateSequence(10_000) { it * 2 }) {
+        println("n = $n")
+        val param = LitmusTestParameters(
+            affinityScheduleUnrestricted(2)[0], 7, null, ::CinteropBarrier
+        )
+        val results = runner.runTest(n, param, testProducer)
+        results.prettyPrint()
+        resultsQueue.add(results)
+        if (resultsQueue.size == 3) {
+            resultsQueue.removeFirst()
+            val (r1, r2) = resultsQueue
+            val chi = chiSquaredTest(convert(r1), convert(r2))
+            println("$chi")
+            if (chi) break
+        }
+    }
 }
