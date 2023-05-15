@@ -23,12 +23,12 @@ fun main() {
 
     val testProducer = ::SBTest
 
-    for(n in generateSequence(10_000) { (it * 1.1).toInt() }) {
+    for (b in generateSequence(3) { (it * 1.1 + 1).toInt() }.takeWhile { it < 1000 }) {
         val param = LitmusTestParameters(
-            affinityScheduleUnrestricted(2)[0], 300, null, ::CinteropBarrier
+            affinityScheduleUnrestricted(2)[0], b, null, ::CinteropBarrier
         )
-        val results = runner.runTest(n, param, testProducer)
-        println("$n,${results.interestingFrequency}")
+        val results = runner.runTest(1_000_000, param, testProducer)
+        println("$b,${results.interestingFrequency}")
 //        results.prettyPrint()
     }
 
