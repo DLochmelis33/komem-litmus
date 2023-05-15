@@ -1,3 +1,7 @@
+fun doStats(testBatch: List<BasicLitmusTest>) {
+//    timeBetweenInteresting(testBatch)
+}
+
 fun stackFreqSplit(testBatch: List<BasicLitmusTest>) {
     println("run ended")
     val outcomes = listOf(0 to 0, 0 to 1, 1 to 0, 1 to 1)
@@ -14,4 +18,22 @@ fun stackFreqSplit(testBatch: List<BasicLitmusTest>) {
             .joinToString(",")
             .let { println(it) }
     }
+}
+
+fun timeBetweenInteresting(testBatch: List<BasicLitmusTest>) {
+    val outcomeSetup = testBatch.first().getOutcomeSetup()
+    val times = mutableListOf<Int>()
+    var cnt = 0
+    for (r in testBatch) {
+        if (outcomeSetup!!.getType(r.outcome) == OutcomeType.INTERESTING) {
+            times.add(cnt)
+            cnt = 0
+        } else {
+            cnt++
+        }
+    }
+    val dist = times.groupingBy { it }.eachCount()
+    dist.entries
+        .map { (k, v) -> "$k,$v" }
+        .forEach { println(it) }
 }

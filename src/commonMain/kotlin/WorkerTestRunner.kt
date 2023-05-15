@@ -41,6 +41,7 @@ object WorkerTestRunner : LitmusTestRunner {
                 .flatten()
                 .onEach { it.arbiter() }
                 .let { collectOutcomes(it) }
+            doStats(testBatches.flatten())
             return outcomes
         } else {
             require(actorFunctions.size == affinityMap.size) { "affinity parameters don't match actors" }
@@ -54,6 +55,7 @@ object WorkerTestRunner : LitmusTestRunner {
                 parameters.affinityMap
             ).forEach { it.result }
             for (test in testBatch) test.arbiter()
+            doStats(testBatch)
             return collectOutcomes(testBatch)
         }
     }
