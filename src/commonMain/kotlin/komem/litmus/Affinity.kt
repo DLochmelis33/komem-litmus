@@ -59,4 +59,5 @@ interface AffinityManager {
     )
 }
 
-expect fun getAffinityManager(): AffinityManager?
+//expect fun getAffinityManager(): AffinityManager?
+fun getAffinityManager(): AffinityManager? = null

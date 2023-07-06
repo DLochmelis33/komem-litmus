@@ -1,8 +1,8 @@
 package komem.litmus.statistics
 
 import komem.litmus.*
-import komem.litmus.runners.WorkerTestRunner
 import komem.litmus.barriers.*
+import komem.litmus.runners.WorkerTestRunner
 import komem.litmus.tests.*
 
 fun distributionTest() {
@@ -15,7 +15,7 @@ fun distributionTest() {
         listOf(::SpinBarrier)
     ).toList()
 
-    val testProducer = ::SBTest
+    val testProducer = ::MP_NoDRF_Test
     val results = List(10) {
         parameters.map { param ->
             runner.runTest(param, testProducer).groupToInfo(testProducer().getOutcomeSetup())

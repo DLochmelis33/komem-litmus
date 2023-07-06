@@ -100,3 +100,33 @@ class UPUBRefTest : LitmusTest("publication + reference") {
         }
     }
 }
+
+class SBTest : LitmusTest("store buffering") {
+
+    var x = 0
+    var y = 0
+
+    var a = 0
+    var b = 0
+
+    override fun thread1() {
+        x = 123123123
+        a = y
+    }
+
+    override fun thread2() {
+        y = 321321321
+        b = x
+    }
+
+    override fun arbiter() {
+        outcome = a to b
+    }
+
+    init {
+        setupOutcomes {
+            accepted = setOf(0 to 1, 1 to 0, 1 to 1)
+            interesting = setOf(0 to 0)
+        }
+    }
+}

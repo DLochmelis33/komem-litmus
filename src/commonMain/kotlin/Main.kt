@@ -1,4 +1,5 @@
-import komem.litmus.barriers.CinteropSpinBarrier
+//import komem.litmus.barriers.CinteropSpinBarrier
+import komem.litmus.barriers.SpinBarrier
 import komem.litmus.mergeOutcomes
 import komem.litmus.prettyPrint
 import komem.litmus.runners.WorkerTestRunner
@@ -15,7 +16,7 @@ fun main() {
         affinityMapSchedule = listOf(null), // getAffinityManager()?.presetShort() ?: listOf(null),
         syncPeriodSchedule = generateSequence(3) { it * 4 }.take(3).toList(),
         memShufflerProducerSchedule = listOf(null),
-        barrierSchedule = listOf(::CinteropSpinBarrier)
+        barrierSchedule = listOf(::SpinBarrier) // Cinterop
     ).toList()
 
     val singleTestDuration = 3.seconds
